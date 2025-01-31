@@ -41,7 +41,7 @@
          <h2 class="fw-bold">Customers</h2>
          <p>Create, edit and manage your customers.</p>
        </div>
-       <button class="btn btn-primary" (click)="openCreateModal()">
+       <button class="btn btn-primary" (click)="openCustomerForm()">
          <i class="bi bi-person-plus"></i> Add new customer <i class="bi bi-chevron-down"></i>
        </button>
      </div>
@@ -89,21 +89,32 @@
     <table class="table table-bordered table-striped">
       <thead>
         <tr>
+          <th></th>
           <th>First Name</th>
           <th>Email</th>
           <th>Phone number</th>
           <th>Joined at</th>
+          <th></th>
         </tr>
       </thead>
       <tbody>
         <tr *ngIf="customers.length === 0">
-            <td colspan="4" class="text-center">No records available</td>
-          </tr>
+            <td colspan="6" class="text-center">No records available</td>
+        </tr>
         <tr *ngFor="let customer of customers">
+          <td> <input type="checkbox"> </td>
           <td>{{ customer.name }}</td>
           <td>{{ customer.email }}</td>
           <td>{{ customer.telephone }}</td>
           <td>{{ formatDate(customer.created_at) }}</td>
+          <td> 
+            <div ngbDropdown class="d-inline-block">
+                <i class="bi bi-three-dots-vertical" style="cursor:pointer" id="dropdownBasic1" ngbDropdownToggle></i>
+                <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+                    <button ngbDropdownItem (click)="openCustomerForm(customer)">Edit</button>
+                </div>
+            </div>
+          </td>
         </tr>
       </tbody>
     </table>

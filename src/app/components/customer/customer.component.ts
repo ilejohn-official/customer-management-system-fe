@@ -1,13 +1,13 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule, DatePipe} from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { NgbPaginationModule, NgbModule, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbPaginationModule, NgbModule, NgbModal, NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 import { CustomerService } from '../../services/customer.service';
 import { CustomerFormComponent } from '../customer-form/customer-form.component';
 
 @Component({
   selector: 'app-customer',
-  imports: [CommonModule, FormsModule, NgbModule, NgbPaginationModule],
+  imports: [CommonModule, FormsModule, NgbModule, NgbPaginationModule, NgbDropdownModule],
   providers: [DatePipe],
   templateUrl: './customer.component.html',
   styleUrl: './customer.component.scss'
@@ -56,8 +56,10 @@ export class CustomerComponent implements OnInit {
     return this.datePipe.transform(date, 'MMM dd, yyyy, h:mm:ss a') + ' GMT';
   }
 
-  openCreateModal() {
+  openCustomerForm(customer: any = null) {
     const modalRef = this.modalService.open(CustomerFormComponent);
+    modalRef.componentInstance.selectedCustomer = customer;
+    
     modalRef.result.then(() => this.fetchCustomers(), () => {});
   }
 
