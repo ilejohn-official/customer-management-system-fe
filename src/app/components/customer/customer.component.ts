@@ -1,8 +1,9 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule, DatePipe} from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { NgbPaginationModule, NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbPaginationModule, NgbModule, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { CustomerService } from '../../services/customer.service';
+import { CustomerFormComponent } from '../customer-form/customer-form.component';
 
 @Component({
   selector: 'app-customer',
@@ -13,7 +14,8 @@ import { CustomerService } from '../../services/customer.service';
 })
 export class CustomerComponent implements OnInit {
   private customerService = inject(CustomerService);
-  private datePipe = inject(DatePipe)
+  private datePipe = inject(DatePipe);
+  private modalService = inject(NgbModal);
 
   currentPage = 1;
   itemsPerPage = 5;
@@ -53,5 +55,11 @@ export class CustomerComponent implements OnInit {
   formatDate(date: string) {
     return this.datePipe.transform(date, 'MMM dd, yyyy, h:mm:ss a') + ' GMT';
   }
+
+  openCreateModal() {
+    const modalRef = this.modalService.open(CustomerFormComponent);
+    modalRef.result.then(() => this.fetchCustomers(), () => {});
+  }
+
 
 }
